@@ -60,3 +60,118 @@ index.html
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cricket Auction</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: white;
+      text-align: center;
+    }
+
+    .player {
+      font-size: 40px;
+      margin-top: 40px;
+    }
+
+    .bid {
+      font-size: 70px;
+      color: #00ff9c;
+      margin: 20px;
+    }
+
+    .teams {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 20px;
+    }
+
+    .team {
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 18px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .bidbtn { background: orange; }
+    .sold { background: red; }
+    .next { background: green; }
+  </style>
+</head>
+<body>
+
+<h1>CRICKET AUCTION</h1>
+
+<div class="player" id="playerName">PLAYER 1</div>
+<div>Base Price: 2000 pts</div>
+<div class="bid" id="bid">2000</div>
+
+<button class="bidbtn" onclick="increase()">+500</button>
+<button class="sold" onclick="sold()">SOLD</button>
+<button class="next" onclick="nextPlayer()">NEXT PLAYER</button>
+
+<h2>TEAM PURSE</h2>
+<div class="teams" id="teams"></div>
+
+<script>
+let basePrice = 2000;
+let currentBid = basePrice;
+let currentPlayer = 1;
+let winningTeam = 0;
+
+let teams = [];
+for (let i = 1; i <= 16; i++) {
+  teams.push({ name: "TEAM " + i, purse: 100000 });
+}
+
+function renderTeams() {
+  let t = document.getElementById("teams");
+  t.innerHTML = "";
+  teams.forEach((team, i) => {
+    t.innerHTML += `
+      <div class="team">
+        ${team.name}<br>
+        ${team.purse} pts<br>
+        <button onclick="bidTeam(${i})">BID</button>
+      </div>
+    `;
+  });
+}
+
+function bidTeam(i) {
+  currentBid += 500;
+  winningTeam = i;
+  document.getElementById("bid").innerText = currentBid;
+}
+
+function sold() {
+  if (winningTeam === null) return;
+  teams[winningTeam].purse -= currentBid;
+  renderTeams();
+  alert("Sold to " + teams[winningTeam].name);
+}
+
+function nextPlayer() {
+  currentPlayer++;
+  currentBid = basePrice;
+  document.getElementById("playerName").innerText = "PLAYER " + currentPlayer;
+  document.getElementById("bid").innerText = currentBid;
+}
+
+renderTeams();
+</script>
+
+</body>
+</html>
